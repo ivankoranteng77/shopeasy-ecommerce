@@ -3,6 +3,7 @@
 ## 🎯 FASTEST DEPLOYMENT (5 minutes)
 
 ### Step 1: Prepare Git Repository
+
 ```bash
 cd C:\Users\ivank\OneDrive\Desktop\application
 git init
@@ -11,6 +12,7 @@ git commit -m "Initial ShopEasy e-commerce app"
 ```
 
 ### Step 2: Deploy Backend (Railway - FREE)
+
 1. Go to https://railway.app
 2. Sign up with GitHub
 3. Click "Deploy from GitHub repo"
@@ -25,6 +27,7 @@ git commit -m "Initial ShopEasy e-commerce app"
 7. Deploy! (Takes 2-3 minutes)
 
 ### Step 3: Deploy Frontend (Vercel - FREE)
+
 1. Go to https://vercel.com
 2. Sign up with GitHub
 3. Click "New Project"
@@ -37,10 +40,12 @@ git commit -m "Initial ShopEasy e-commerce app"
 6. Deploy! (Takes 1-2 minutes)
 
 ### Step 4: Update API URL
+
 After backend deploys, Railway gives you a URL like:
 `https://shopeasy-production.up.railway.app`
 
 Update frontend/app.js line 4:
+
 ```javascript
 : 'https://your-actual-railway-url.up.railway.app/api/v1', // Replace with your Railway URL
 ```
@@ -48,21 +53,25 @@ Update frontend/app.js line 4:
 Commit and push - Vercel auto-redeploys!
 
 ## 🔗 URLs You'll Get:
+
 - **Frontend**: https://shopeasy.vercel.app
-- **Backend**: https://shopeasy.railway.app  
+- **Backend**: https://shopeasy.railway.app
 - **Admin**: https://shopeasy.vercel.app/admin.html
 
 ## ⚡ Alternative - All-in-One Deployment
 
 ### Option: Railway Full-Stack
+
 1. Deploy to Railway
 2. It serves both backend AND frontend
 3. Single URL for everything!
 
 ## 🎉 DONE!
+
 Your e-commerce site will be live in 5-10 minutes!
 
 ## 📋 Current Features Ready for Production:
+
 ✅ Product catalog with categories
 ✅ Shopping cart (localStorage)
 ✅ Order placement

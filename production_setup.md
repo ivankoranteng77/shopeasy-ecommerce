@@ -1,6 +1,7 @@
 # 🚀 ShopEasy E-Commerce - Production Hosting Guide
 
 ## 📋 Current Status
+
 - ✅ Backend API: FastAPI with SQLite database
 - ✅ Frontend: Bootstrap 5 + JavaScript
 - ✅ Admin Panel: Product management + authentication
@@ -10,7 +11,9 @@
 ## 🌐 Hosting Options (Recommended)
 
 ### Option 1: Vercel (Frontend) + Railway (Backend) - FREE
+
 1. **Frontend on Vercel**
+
    - Free static hosting
    - Automatic deployments from Git
    - Custom domain support
@@ -21,15 +24,18 @@
    - Environment variables support
 
 ### Option 2: Netlify + Render - FREE
+
 1. **Frontend on Netlify**
 2. **Backend on Render**
 
 ### Option 3: Single Platform - Heroku/Railway
+
 - Deploy both frontend and backend together
 
 ## 📦 Files Ready for Hosting
 
 ### Backend Files:
+
 ```
 app/
 ├── main.py
@@ -41,10 +47,11 @@ app/
 ```
 
 ### Frontend Files:
+
 ```
 frontend/
 ├── index.html
-├── admin.html  
+├── admin.html
 ├── app.js
 ├── admin.js
 ├── style.css
@@ -61,9 +68,13 @@ frontend/
 ## 🚀 Quick Deploy Steps:
 
 ### Step 1: Prepare for Git
+
 ### Step 2: Deploy Backend (Railway)
+
 ### Step 3: Deploy Frontend (Vercel)
+
 ### Step 4: Update configurations
+
 ### Step 5: Test live site
 
 Would you like me to proceed with the hosting setup?

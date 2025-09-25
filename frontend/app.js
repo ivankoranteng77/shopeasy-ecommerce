@@ -1,14 +1,46 @@
 // ShopEasy Frontend JavaScript
 class ShopEasy {
     constructor() {
-        this.apiBaseUrl = 'http://127.0.0.1:8003/api/v1';
+        this.apiBaseUrl = 'http://127.0.0.1:8001/api/v1';
         this.cart = this.loadCart();
         this.products = [];
         this.categories = [];
         this.currentCategory = 'all';
         this.searchQuery = '';
         
+        // Mobile optimizations
+        this.initMobileOptimizations();
+        
         this.init();
+    }
+    
+    initMobileOptimizations() {
+        // Add touch-friendly interactions
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Handle orientation change
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.updateLayout();
+            }, 300);
+        });
+        
+        // Optimize for mobile Safari
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            document.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, {passive: false});
+        }
+    }
+    
+    updateLayout() {
+        // Force layout update after orientation change
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.style.display = 'none';
+            grid.offsetHeight; // Trigger reflow
+            grid.style.display = '';
+        }
     }
 
     init() {
@@ -99,20 +131,21 @@ class ShopEasy {
     }
 
     renderCategoryFilter() {
-        const container = document.getElementById('categoryFilter');
-        const allButton = container.querySelector('[data-category="all"]');
+        // Get all category buttons that are already in HTML
+        const categoryButtons = document.querySelectorAll('.category-btn');
         
-        this.categories.forEach(category => {
-            const button = document.createElement('button');
-            button.className = 'btn btn-outline-primary category-btn';
-            button.dataset.category = category.id;
-            button.textContent = category.name;
-            button.addEventListener('click', () => this.filterByCategory(category.id));
-            container.appendChild(button);
+        // Add click event listeners to each button
+        categoryButtons.forEach(button => {
+            const categoryId = button.dataset.category;
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                // Filter products
+                this.filterByCategory(categoryId);
+            });
         });
-
-        // Add event listener for "All Products" button
-        allButton.addEventListener('click', () => this.filterByCategory('all'));
     }
 
     renderProducts() {
@@ -143,7 +176,7 @@ class ShopEasy {
 
     createProductCard(product) {
         const col = document.createElement('div');
-        col.className = 'col-lg-3 col-md-4 col-sm-6 fade-in-up';
+        col.className = 'col-lg-3 col-md-4 col-sm-6 col-12 fade-in-up';
 
         const categoryClass = this.getCategoryClass(product.categories);
         const isInStock = product.stock_quantity > 0;
@@ -180,8 +213,10 @@ class ShopEasy {
         if (!categories || categories.length === 0) return 'category-default';
         
         const categoryName = categories[0].name.toLowerCase();
-        if (categoryName.includes('electronic')) return 'category-electronics';
         if (categoryName.includes('clothing')) return 'category-clothing';
+        if (categoryName.includes('perfume')) return 'category-perfume';
+        if (categoryName.includes('cosmetic')) return 'category-cosmetics';
+        if (categoryName.includes('electronic')) return 'category-electronics';
         if (categoryName.includes('book')) return 'category-books';
         if (categoryName.includes('home') || categoryName.includes('garden')) return 'category-home';
         if (categoryName.includes('sport')) return 'category-sports';

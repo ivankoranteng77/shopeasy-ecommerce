@@ -2,62 +2,62 @@ name: Deploy Backend to GitHub Codespaces
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Create database
-      run: |
-        python -c "
-        import sys
-        sys.path.append('.')
-        from app.database import engine, Base
-        Base.metadata.create_all(bind=engine)
-        print('Database created successfully!')
-        "
-    
-    - name: Add sample data
-      run: |
-        python -c "
-        import sys
-        sys.path.append('.')
-        from app.database import get_db
-        from app.models import Category, Product
-        from sqlalchemy.orm import sessionmaker
-        from app.database import engine
-        
-        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-        db = SessionLocal()
-        
-        # Add categories if they don't exist
-        categories = ['Electronics', 'Clothing', 'Home & Garden', 'Books', 'Sports']
-        for cat_name in categories:
-            if not db.query(Category).filter(Category.name == cat_name).first():
-                category = Category(name=cat_name, description=f'{cat_name} products')
-                db.add(category)
-        
-        db.commit()
-        db.close()
-        print('Sample data added successfully!')
-        "
-    
-    - name: Start FastAPI server
-      run: |
-        echo 'Backend is ready to deploy!'
-        echo 'Use: python -m uvicorn app.main:app --host 0.0.0.0 --port 8000'
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create database
+        run: |
+          python -c "
+          import sys
+          sys.path.append('.')
+          from app.database import engine, Base
+          Base.metadata.create_all(bind=engine)
+          print('Database created successfully!')
+          "
+
+      - name: Add sample data
+        run: |
+          python -c "
+          import sys
+          sys.path.append('.')
+          from app.database import get_db
+          from app.models import Category, Product
+          from sqlalchemy.orm import sessionmaker
+          from app.database import engine
+
+          SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+          db = SessionLocal()
+
+          # Add categories if they don't exist
+          categories = ['Electronics', 'Clothing', 'Home & Garden', 'Books', 'Sports']
+          for cat_name in categories:
+              if not db.query(Category).filter(Category.name == cat_name).first():
+                  category = Category(name=cat_name, description=f'{cat_name} products')
+                  db.add(category)
+
+          db.commit()
+          db.close()
+          print('Sample data added successfully!')
+          "
+
+      - name: Start FastAPI server
+        run: |
+          echo 'Backend is ready to deploy!'
+          echo 'Use: python -m uvicorn app.main:app --host 0.0.0.0 --port 8000'
