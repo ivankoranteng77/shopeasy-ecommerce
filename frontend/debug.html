@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Debug Frontend API</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      .error {
+        color: red;
+        background: #ffe6e6;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      .success {
+        color: green;
+        background: #e6ffe6;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px 0;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Frontend API Debug</h1>
+
+    <button onclick="testAPI()">Test API Connection</button>
+
+    <div id="results"></div>
+
+    <script>
+      async function testAPI() {
+        const results = document.getElementById("results");
+        results.innerHTML = "<p>Testing API connection...</p>";
+
+        try {
+          // Test 1: Direct API call
+          console.log("Testing API at: http://127.0.0.1:8000/api/v1/products/");
+          const response = await fetch(
+            "http://127.0.0.1:8000/api/v1/products/"
+          );
+          console.log("Response status:", response.status);
+          console.log("Response ok:", response.ok);
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const products = await response.json();
+          console.log("Products received:", products);
+
+          results.innerHTML = `
+                    <div class="success">✅ API Connection Successful!</div>
+                    <p><strong>Found ${products.length} products:</strong></p>
+                `;
+
+          products.forEach((product, index) => {
+            results.innerHTML += `
+                        <div class="product">
+                            <h3>${product.name}</h3>
+                            <p>Price: $${product.price}</p>
+                            <p>Stock: ${product.stock_quantity}</p>
+                            <p>ID: ${product.id}</p>
+                            <p>Description: ${product.description}</p>
+                        </div>
+                    `;
+          });
+        } catch (error) {
+          console.error("API Error:", error);
+          results.innerHTML = `
+                    <div class="error">❌ API Connection Failed!</div>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Check:</strong></p>
+                    <ul>
+                        <li>Is the backend server running on http://127.0.0.1:8000?</li>
+                        <li>Are there any CORS issues?</li>
+                        <li>Is the network connection working?</li>
+                    </ul>
+                `;
+        }
+      }
+
+      // Auto-run the test when page loads
+      window.onload = () => {
+        testAPI();
+      };
+    </script>
+  </body>
+</html>

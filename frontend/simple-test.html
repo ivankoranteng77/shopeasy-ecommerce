@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple API Test</title>
+  </head>
+  <body>
+    <h1>Simple API Test</h1>
+    <div id="status">Testing...</div>
+
+    <script>
+      // Simple test without complex classes
+      fetch("http://127.0.0.1:8000/api/v1/products/")
+        .then((response) => response.json())
+        .then((products) => {
+          document.getElementById("status").innerHTML =
+            `SUCCESS: Found ${products.length} products!<br>` +
+            `First product: ${products[0]?.name || "None"}`;
+        })
+        .catch((error) => {
+          document.getElementById(
+            "status"
+          ).innerHTML = `ERROR: ${error.message}`;
+        });
+    </script>
+  </body>
+</html>
