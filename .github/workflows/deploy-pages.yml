@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Create static site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp admin.html _site/
+          cp -r static/ _site/ 2>/dev/null || echo "No static folder found"
+          
+          # Update API URLs to use Codespaces backend
+          sed -i 's|http://127.0.0.1:8003/api/v1|https://your-codespace-url.github.dev/api/v1|g' _site/index.html
+          sed -i 's|http://127.0.0.1:8003/api/v1|https://your-codespace-url.github.dev/api/v1|g' _site/admin.html
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
